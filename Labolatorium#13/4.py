@@ -22,8 +22,5 @@ class Student:
         else:
             print(f"{self.name} jest gotowy do pracy, czas na majcę")
 
-    def
-
-
 MateuszKapelusz = Student("Mateusz", "Kapelusz", "20", 70, 0.0)
 MateuszKapelusz.drinkCoffe()
