@@ -1,3 +1,5 @@
+#dokończyć bo nie działą :c
+
 import random
 
 class Card:
