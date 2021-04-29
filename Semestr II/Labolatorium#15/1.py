@@ -1,7 +1,8 @@
 #zadanie grupowe
 
 class Restaurant:
-    def __init__(self, nazwa, NIP, REGON, adres, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow, oferujeDowoz):
+    def __init__(self, nazwa, NIP, REGON, adres, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow,
+                 oferujeDowoz):
         self.nazwa = nazwa
         self.NIP = NIP
         self.REGON = REGON
@@ -12,10 +13,15 @@ class Restaurant:
         self.iloscPracownikow = iloscPracownikow
         self.oferujeDowoz = oferujeDowoz
 
+
 class IceCreamStand(Restaurant):
-    flavour = ["vanilla", "cherry", "kiwi", "chocolatte", "strawberry", "mango", "mascarpone", "pistace", "cream", "lemon", "watermelon", "melon", "coffeeEspresso", "coffeLatte", "whiteChocolatte"]
-    def __init__(self, nazwa, NIP, REGON, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow, flavour):
-        super().__init__(self, nazwa, NIP, REGON, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow)
+    flavour = ["vanilla", "cherry", "kiwi", "chocolatte", "strawberry", "mango", "mascarpone", "pistace", "cream",
+               "lemon", "watermelon", "melon", "coffeeEspresso", "coffeLatte", "whiteChocolatte"]
+
+    def __init__(self, nazwa, NIP, REGON, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow, oferujeDowoz,
+                 flavour):
+        super().__init__(self, nazwa, NIP, REGON, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow,
+                         oferujeDowoz)
         self.flavour = flavour
 
     def present(self):
@@ -25,44 +31,84 @@ class IceCreamStand(Restaurant):
         rodzaj = input("Czy chcesz do kubka czy do różka? (Kubek / Rozek)")
         if rodzaj.capitalize() == "Kubek":
             num = int(input("Wybrałeś kubek. Możesz do niego poprosić maksymalnie trzy gałki. Ile chcesz? "))
+            return num
         elif rodzaj.capitalize() == "Rozek":
             num = int(input("Wybrałeś rożek. Ile chcesz gałek? "))
-        return num
+            return num
 
+    def kubek(self, num):
+        galki = []
+
+        IceCreamStand.present(self)
+        for i in num:
+            galka = str(input(f"Podaj smak gałki: "))
+            galki.append(galka)
+        return "Zamówiłeś: ", galki
 
 
 class CoffeShop(Restaurant):
     coffeTypes = ["latte", "americano", "cappuccino", "flatWhite", "mocca", "latteMacchiato", "espresso"]
-    def __init__(self, coffeTypes):
-        super().__init__()
-        self.coffeTypes = coffeTypes
+
+    def __init__(self, nazwa, NIP, REGON, adres, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow,
+                 oferujeDowoz, coffeType):
+        super().__init__(nazwa, NIP, REGON, adres, specjalizacja, wielkoscLokalu, iloscStolikow, iloscPracownikow,
+                         oferujeDowoz)
+        self.coffeType = coffeType
+
+
     def AddCofeeType(self):
         newCoffe = input("Podaj nazwe nowej kawy")
         exists = False
-        for item in CoffeShop.coffeTypes:
+        for item in self.coffeTypes:
             if newCoffe == item:
                 exists = True
-        if exists == False:
-            CoffeShop.coffeTypes.append(newCoffe)
+        if not exists:
+            self.coffeTypes.append(newCoffe)
+
     def availableCoffes(self):
-        for items in CoffeShop.coffeTypes:
-            print (items)
+        for items in self.coffeTypes:
+            print("Dostępne kawy:")
+            return items
+
     def orderCoffe(self):
-        print (CoffeShop.availableCoffes())
+        CoffeShop.availableCoffes(self)
         order = input("Wybierz kawę: ")
-        if order in CoffeShop.coffeTypes:
-            addEspresso = input(("Wzmocnić kawę dodatkowym espresso?"))
+        if order in self.coffeTypes:
+            addEspresso = input("Wzmocnić kawę dodatkowym espresso?")
             if addEspresso.upper() == "TAK":
                 print(order + "double espresso")
-            elif addEspresso.upper() == "NIE":
-                print(order)
             else:
-                print("Nie posiadamy takiej kawy :c")
+                print(order)
+        else:
+            print("Nie posiadamy takiej kawy :c")
+
 
 class Main:
-    lokalneRestauracje = []
+    def __init__(self):
+        self.lokalneRestauracje = []
+        lodziarnia = IceCreamStand("Fabryka lodów", 123456789, 987654321, "Lodziarnia", 40, 8, 4, False, IceCreamStand.flavour)
+        self.lokalneRestauracje.append(lodziarnia)
+
     def AddRestaurant(self):
-        newRestaurant = input("Podaj nazwe nowej restauracji")
-        Main.lokalneRestauracje.append(newRestaurant)
+        nazwa = input("Podaj nazwe nowej restauracji ")
+        NIP = int(input("Podaj NIP "))
+        REGON = int(input("Podaj REGON "))
+        adres = input("Podaj adres: ")
+        powierzchnia = int(input("Jaka jest powierzchnia lokalu? "))
+        stoliki = int(input("Ile jest stolików w lokalu? "))
+        dowoz = bool(input("Czy oferuje dowóz? "))
+        specjalizacja = input("Jaka jest specjalizacja? ")
+        if specjalizacja.capitalize() == "Lodziarnia":
+            newRestaurant = IceCreamStand(nazwa, NIP, REGON, adres, specjalizacja, powierzchnia, stoliki, dowoz,
+                                          IceCreamStand.flavour)
+            self.lokalneRestauracje.append(newRestaurant)
+        elif specjalizacja.capitalize() == "Kawiarnia":
+            newRestaurant = CoffeShop(nazwa, NIP, REGON, adres, specjalizacja, powierzchnia, stoliki, dowoz, "lol",
+                                      CoffeShop.coffeTypes)
+            self.lokalneRestauracje.append(newRestaurant)
+
     def ShowLocalRestaurants(self):
-        print(Main.lokalneRestauracje)
+        repr(self.lokalneRestauracje)
+
+
+Main.ShowLocalRestaurants(Main)
