@@ -1,5 +1,5 @@
-#dokończyć bo nie działą :c
-
+#działa!!!
+import time
 import random
 
 class Card:
@@ -81,33 +81,31 @@ class BiggerLowerGame(Deck):
     def Game(self):
         print("Witaj w grze karcianej: WIĘKSZY / mniejszy")
         myCard = BiggerLowerGame.MyCardRandomizer(self)
-        randomCard = BiggerLowerGame.CardFromDeckRandomizer(self)
-        print(randomCard)
         while True:
             print(f"Twój obecny wynik wynosi:{self.score} ")
             print(f"Twoja obecna karta to: {myCard}")
+            randomCard = BiggerLowerGame.CardFromDeckRandomizer(self)
             print("WIEKSZA czy MNIEJSZA ?")
             answer = input()
-            if answer.upper() == "W" and myCard.rank > randomCard.rank:
+            if answer.upper() == "W" and myCard.rank >= randomCard.rank:
                 print("Prawda!")
-            if answer.upper() == "W" and myCard < randomCard.rank:
+                print(f"Losową kartą była: {randomCard}")
+                self.score += 1
+                time.sleep(2)
+            if answer.upper() == "W" and myCard.rank <= randomCard.rank:
                 print("Fałsz!")
-            if answer.upper() == "L" and myCard < randomCard.rank:
+                print(f"Twój wynik wynosi {self.score}. Dzięki za grę !")
+                break
+            if answer.upper() == "M" and myCard.rank <= randomCard.rank:
                 print("Prawda!")
-            if answer.upper() == "L" and myCard > randomCard.rank:
+                print(f"Losową kartą była: {randomCard}")
+                self.score += 1
+                time.sleep(2)
+            if answer.upper() == "M" and myCard.rank >= randomCard.rank:
                 print("Fałsz!")
-
-
-
+                print(f"Twój wynik wynosi {self.score}. Dzięki za grę !")
+                break
+            myCard = randomCard
 
 biggerLowerGame = BiggerLowerGame([])
 biggerLowerGame.Game()
-
-
-
-
-
-
-
-
-
